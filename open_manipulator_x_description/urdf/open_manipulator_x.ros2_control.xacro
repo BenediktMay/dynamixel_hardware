@@ -11,14 +11,20 @@
         <!-- <param name="use_dummy">true</param> -->
       </hardware>
       <joint name="joint1">
-        <param name="id">11</param>
+        <param name="id">33</param>
         <command_interface name="position"/>
         <command_interface name="velocity"/>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
         <state_interface name="effort"/>
       </joint>
-      <joint name="joint2">
+      <!-- TODO CurrentBasedPosition set to https://github.com/dynamixel-community/dynamixel_hardware/blob/humble/dynamixel_hardware/include/dynamixel_hardware/dynamixel_hardware.hpp
+           <mimic joint="joint_j1" multiplier="-1" offset="0"/> 
+           https://answers.ros.org/question/40932/urdf-using-mimic-joints-and-conversion-to-openrave-format/
+            -->
+
+
+      <!-- <joint name="joint2">
         <param name="id">12</param>
         <command_interface name="position"/>
         <command_interface name="velocity"/>
@@ -49,7 +55,7 @@
         <state_interface name="position"/>
         <state_interface name="velocity"/>
         <state_interface name="effort"/>
-      </joint>
+      </joint> -->
     </ros2_control>
 
   </xacro:macro>
