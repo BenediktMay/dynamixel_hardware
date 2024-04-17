@@ -57,7 +57,7 @@ class SendPositionsTest(Node):
     def goal_result_callback(self, future):
         result = future.result().result
         self.get_logger().info(f'Goal result: {result}')
-        #self.get_logger().info(f'number_of_cyles: {number_of_cyles}')
+        
 
 
 
@@ -68,11 +68,11 @@ def main(args=None):
     rclpy.init(args=args)
     send_positions_test = SendPositionsTest()
 
-    #while rclpy.ok():
-    send_positions_test.send_goal()
-    #    number_of_cyles+=1
-   
-    #    sleep(8)
+    while rclpy.ok():
+        send_positions_test.send_goal()
+        number_of_cyles+=1
+        send_positions_test.get_logger().info(f'number_of_cyles: {number_of_cyles}')
+        sleep(4)
 
     rclpy.spin(send_positions_test)
     rclpy.shutdown()
