@@ -10,6 +10,10 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
 from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
+from time import sleep
+from rclpy.action.client import ClientGoalHandle
+
+
 
 
 #manual send of positions
@@ -35,18 +39,40 @@ class SendPositionsTest(Node):
         goal_msg = FollowJointTrajectory.Goal()
         goal_msg.trajectory.joint_names = ['joint1']
         goal_msg.trajectory.points = [
-            JointTrajectoryPoint(positions=[-1.57], time_from_start=Duration(sec=2)),
-            JointTrajectoryPoint(positions=[1.57], time_from_start=Duration(sec=4))
+            JointTrajectoryPoint(positions=[-1.57], time_from_start=Duration(sec=1)),
+            JointTrajectoryPoint(positions=[1.57], time_from_start=Duration(sec=2))
         ]
 
         self.get_logger().info('waiting for server')
         self.send_positions_test_action_server.wait_for_server()
         self.get_logger().info('Sending goal')
-        self.send_positions_test_action_server.send_goal_async(goal_msg)
+        self.send_positions_test_action_server.send_goal_async(goal_msg).add_done_callback(self.goal_response_callback)
+
+    def goal_response_callback(self, future):
+        self.goal_handle:ClientGoalHandle = future.result()
+        if self.goal_handle.accepted:
+            self.get_logger().info('Goal accepted')
+            self.goal_handle.get_result_async().add_done_callback(self.goal_result_callback)
+
+    def goal_result_callback(self, future):
+        result = future.result().result
+        self.get_logger().info(f'Goal result: {result}')
+        #self.get_logger().info(f'number_of_cyles: {number_of_cyles}')
+
+
+
 
 def main(args=None):
+
+    number_of_cyles=0
     rclpy.init(args=args)
     send_positions_test = SendPositionsTest()
+
+    #while rclpy.ok():
     send_positions_test.send_goal()
+    #    number_of_cyles+=1
+   
+    #    sleep(8)
+
     rclpy.spin(send_positions_test)
     rclpy.shutdown()
