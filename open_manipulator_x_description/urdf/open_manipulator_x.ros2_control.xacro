@@ -6,7 +6,7 @@
     <ros2_control name="${name}" type="system">
       <hardware>
         <plugin>dynamixel_hardware/DynamixelHardware</plugin>
-        <param name="usb_port">/dev/ttyUSB1</param>
+        <param name="usb_port">/dev/ttyUSB0</param>
         <param name="baud_rate">1000000</param>
         <!-- <param name="use_dummy">true</param> -->
       </hardware>
@@ -18,9 +18,27 @@
         <state_interface name="velocity"/>
         <state_interface name="effort"/>
       </joint>
+      
+      <!-- ENABLE IF SECOND MOTOR IS ADDED NOT TESTED YET
+      <joint name="joint2">
+        <param name="id">34</param> ToDo change id
+        <command_interface name="position"/>
+        <command_interface name="velocity"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <mimic joint="joint1" multiplier="-1" offset="0"/> 
+      </joint>
+      -->
+
+
       <!-- TODO CurrentBasedPosition set to https://github.com/dynamixel-community/dynamixel_hardware/blob/humble/dynamixel_hardware/include/dynamixel_hardware/dynamixel_hardware.hpp
            <mimic joint="joint_j1" multiplier="-1" offset="0"/> 
            https://answers.ros.org/question/40932/urdf-using-mimic-joints-and-conversion-to-openrave-format/
+            
+            
+            
+            
             -->
 
 
